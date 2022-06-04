@@ -24,6 +24,12 @@ def on_release(key):
 	if key == keyboard.Key.up:
 		if vMenu <= 3 and vMenu > 1:
 			vMenu -= 1
+	if key == keyboard.Key.left:
+		if vMenu == 4:
+			vMenu = 1
+	if key == keyboard.Key.right:
+		if vMenu == 1:
+			vMenu = 4
 	criaMenu()
 		
 def limparTela():
@@ -35,9 +41,12 @@ def criaMenu():
 	print(bcolors.OKBLUE + "╔══════════════════════════════════════════════════════════╗" + bcolors.ENDC)
 	
 	if vMenu == 1:
-		print(bcolors.OKBLUE + "║" + bcolors.BLUE_WHITE_INICIO  + " HOSPEDAGEM " + bcolors.ENDC + bcolors.OKBLUE + "                                              ║ " + bcolors.ENDC)
+		print(bcolors.OKBLUE + "║" + bcolors.BLUE_WHITE_INICIO  + " HOSPEDAGEM " + bcolors.ENDC + bcolors.OKBLUE  + " " + bcolors.BLACK_WHITE_INICIO  + " SERVIÇOS " + bcolors.ENDC + bcolors.OKBLUE + "                                   ║ " + bcolors.ENDC)
 	else:
-		print(bcolors.OKBLUE + "║" + bcolors.BLACK_WHITE_INICIO  + " HOSPEDAGEM " + bcolors.ENDC + bcolors.OKBLUE + "                                              ║ " + bcolors.ENDC)
+		if vMenu == 4:
+			print(bcolors.OKBLUE + "║" + bcolors.BLACK_WHITE_INICIO + " HOSPEDAGEM " + bcolors.ENDC + bcolors.OKBLUE + " " + bcolors.BLUE_WHITE_INICIO  + " SERVIÇOS " + bcolors.ENDC + bcolors.OKBLUE + "                                   ║ " + bcolors.ENDC)
+		else:
+			print(bcolors.OKBLUE + "║" + bcolors.BLACK_WHITE_INICIO + " HOSPEDAGEM " + bcolors.ENDC + bcolors.OKBLUE + " " + bcolors.BLACK_WHITE_INICIO  + " SERVIÇOS " + bcolors.ENDC + bcolors.OKBLUE + "                                   ║ " + bcolors.ENDC)
 	
 	if vMenu == 2:
 		print(bcolors.OKBLUE + "║" + bcolors.BLUE_WHITE_INICIO + " QUARTOS    " + bcolors.ENDC + bcolors.OKBLUE + "                                              ║ " + bcolors.ENDC)
