@@ -1,7 +1,7 @@
 import os
 from pynput import keyboard
 
-vMenu = 1
+a = 0
 
 class bcolors:
     OKBLUE = '\033[94m'
@@ -13,59 +13,52 @@ class bcolors:
 
 def on_press(key):
 	pass
-
-def on_release(key):
-	global vMenu
-	if key == keyboard.Key.esc:
-		return False
-	if key == keyboard.Key.down:
-		if vMenu >= 1 and vMenu < 3:
-			vMenu += 1
-	if key == keyboard.Key.up:
-		if vMenu <= 3 and vMenu > 1:
-			vMenu -= 1
-	if key == keyboard.Key.left:
-		if vMenu == 4:
-			vMenu = 1
-	if key == keyboard.Key.right:
-		if vMenu == 1:
-			vMenu = 4
-	criaMenu()
 		
 def limparTela():
 	os.system('clear') or None
 
-def criaMenu():
-	global vMenu
-	limparTela()
-	print(bcolors.OKBLUE + "╔══════════════════════════════════════════════════════════╗" + bcolors.ENDC)
-	
-	if vMenu == 1:
-		print(bcolors.OKBLUE + "║" + bcolors.BLUE_WHITE_INICIO  + " HOSPEDAGEM " + bcolors.ENDC + bcolors.OKBLUE  + " " + bcolors.BLACK_WHITE_INICIO  + " SERVIÇOS " + bcolors.ENDC + bcolors.OKBLUE + "                                   ║ " + bcolors.ENDC)
-	else:
-		if vMenu == 4:
-			print(bcolors.OKBLUE + "║" + bcolors.BLACK_WHITE_INICIO + " HOSPEDAGEM " + bcolors.ENDC + bcolors.OKBLUE + " " + bcolors.BLUE_WHITE_INICIO  + " SERVIÇOS " + bcolors.ENDC + bcolors.OKBLUE + "                                   ║ " + bcolors.ENDC)
-		else:
-			print(bcolors.OKBLUE + "║" + bcolors.BLACK_WHITE_INICIO + " HOSPEDAGEM " + bcolors.ENDC + bcolors.OKBLUE + " " + bcolors.BLACK_WHITE_INICIO  + " SERVIÇOS " + bcolors.ENDC + bcolors.OKBLUE + "                                   ║ " + bcolors.ENDC)
-	
-	if vMenu == 2:
-		print(bcolors.OKBLUE + "║" + bcolors.BLUE_WHITE_INICIO + " QUARTOS    " + bcolors.ENDC + bcolors.OKBLUE + "                                              ║ " + bcolors.ENDC)
-	else:
-		print(bcolors.OKBLUE + "║" + bcolors.BLACK_WHITE_INICIO + " QUARTOS    " + bcolors.ENDC + bcolors.OKBLUE + "                                              ║ " + bcolors.ENDC)
-	
-	if vMenu == 3:
-		print(bcolors.OKBLUE + "║" + bcolors.BLUE_WHITE_INICIO + " RESERVAS   " + bcolors.ENDC + bcolors.OKBLUE + "                                              ║ " + bcolors.ENDC)
-	else:
-		print(bcolors.OKBLUE + "║" + bcolors.BLACK_WHITE_INICIO + " RESERVAS   " + bcolors.ENDC + bcolors.OKBLUE + "                                              ║ " + bcolors.ENDC)
+def criaMenu(Opcoes, i):
+	def print_espaco(n):
+		while n > 0:
+			print(" ", end = "")
+			n -= 1
 			
-	print(bcolors.OKBLUE + "║                                                          ║" + bcolors.ENDC)
-	print(bcolors.OKBLUE + "║                                                          ║" + bcolors.ENDC)
-	print(bcolors.OKBLUE + "║                                                          ║" + bcolors.ENDC)
-	print(bcolors.OKBLUE + "╚══════════════════════════════════════════════════════════╝" + bcolors.ENDC)
-
-criaMenu()
-
-with keyboard.Listener(
-        on_press=on_press,
-        on_release=on_release) as listener:
-    listener.join()
+	limparTela()
+	
+	global a
+	a = i
+	
+	Elementos = len(Opcoes) - 1
+	
+	maior = 0
+	for Opcao in Opcoes:
+		if len(Opcao) > maior:
+			maior = len(Opcao)
+	
+	for indice, Opcao in enumerate(Opcoes):
+		if i == indice:
+			print(bcolors.OKBLUE + bcolors.BLUE_WHITE_INICIO  + " " + Opcao + " ", end = "")
+			print_espaco((maior - len(Opcao)))
+			print(bcolors.ENDC + bcolors.OKBLUE + bcolors.ENDC)
+		else:
+			print(bcolors.OKBLUE + bcolors.BLACK_WHITE_INICIO + " " + Opcao + " " + bcolors.ENDC + bcolors.OKBLUE + bcolors.ENDC)
+	
+	def on_release(key):
+		global a
+		if key == keyboard.Key.esc:
+			return False
+		if key == keyboard.Key.down:
+			if a >= 0 and a < Elementos:
+				a += 1
+		if key == keyboard.Key.up:
+			if a <= Elementos and a > 0:
+				a -= 1
+		criaMenu(Opcoes, a)
+		
+	with keyboard.Listener(
+    on_press=on_press,
+    on_release=on_release) as listener:
+		listener.join()
+		
+li = ['Sim, concordo com as regras', 'Não, discordo das regras', 'Sair']
+criaMenu(li, 0)
